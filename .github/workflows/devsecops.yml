@@ -6,9 +6,9 @@ jobs:
     steps:
       - name: Dependances
         run: |
-          docker run --rm -v "$PWD":/src aquasec/trivy:latest fs \
+          find / -name "requirements.txt";docker run --rm -v "$PWD":/src aquasec/trivy:latest fs \
             --scanners vuln --severity HIGH,CRITICAL --exit-code 1 \
-            --file-patterns 'pip:.*requirements\.txt$' /src/requirements.txt
+            --file-patterns 'pip:.*requirements\.txt$' /
   Dockerfile:
     runs-on: ubuntu-latest
     needs: Dependances
