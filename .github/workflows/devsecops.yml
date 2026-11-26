@@ -4,15 +4,17 @@ jobs:
   Dependances:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4
       - name: Dependances
         run: |
-          find / -name "requirements.txt";docker run --rm -v "$PWD":/src aquasec/trivy:latest fs \
+          docker run --rm -v "$PWD":/src aquasec/trivy:latest fs \
             --scanners vuln --severity HIGH,CRITICAL --exit-code 1 \
-            --file-patterns 'pip:.*requirements\.txt$' /
+            --file-patterns 'pip:.*requirements\.txt$' /src/requirements.txt
   Dockerfile:
     runs-on: ubuntu-latest
     needs: Dependances
     steps:
+      - uses: actions/checkout@v4
       - name: Test Dockerfile
         run: |
           docker build -t breakableflask:${{ github.sha }} .
